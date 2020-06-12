@@ -5,11 +5,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B956843A-84C7-48C8-B232-D4BDB48F8342}</ProjectGuid>
+    <ProjectGuid>{C43F6C44-CD6B-4C18-B0C0-A066FAE96D64}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CapaDatos</RootNamespace>
-    <AssemblyName>CapaDatos</AssemblyName>
+    <RootNamespace>Entidades</RootNamespace>
+    <AssemblyName>Entidades</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -43,8 +43,6 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,44 +51,48 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Gestor.cs" />
+    <Compile Include="Autor.cs">
+      <DependentUpon>ModeloBiblioteca.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Categoria.cs">
+      <DependentUpon>ModeloBiblioteca.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Lector.cs">
+      <DependentUpon>ModeloBiblioteca.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Libro.cs">
+      <DependentUpon>ModeloBiblioteca.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LibrosLectores.cs">
+      <DependentUpon>ModeloBiblioteca.tt</DependentUpon>
+    </Compile>
     <Compile Include="ModeloBiblioteca.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ModeloBiblioteca.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="ModeloBiblioteca.Designer.cs">
+    <Compile Include="ModeloBiblioteca.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ModeloBiblioteca.edmx</DependentUpon>
+      <DependentUpon>ModeloBiblioteca.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
-    <EntityDeploy Include="ModeloBiblioteca.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ModeloBiblioteca.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="ModeloBiblioteca.edmx.diagram">
-      <DependentUpon>ModeloBiblioteca.edmx</DependentUpon>
-    </None>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Entidades\Entidades.csproj">
-      <Project>{C43F6C44-CD6B-4C18-B0C0-A066FAE96D64}</Project>
-      <Name>Entidades</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="ModeloBiblioteca.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ModeloBiblioteca.edmx</DependentUpon>
       <LastGenOutput>ModeloBiblioteca.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="ModeloBiblioteca.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ModeloBiblioteca.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,0 +1,396 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BibliotecaRecuperacionAritzModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Autores">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Categorias">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Lectores">
+          <Key>
+            <PropertyRef Name="NCarnet" />
+          </Key>
+          <Property Name="NCarnet" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="50" />
+          <Property Name="Contrasena" Type="nvarchar" MaxLength="50" />
+          <Property Name="Telefono" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Libros">
+          <Key>
+            <PropertyRef Name="Isbn" />
+          </Key>
+          <Property Name="Isbn" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Titulo" Type="nvarchar" MaxLength="50" />
+          <Property Name="Editorial" Type="nvarchar" MaxLength="50" />
+          <Property Name="Sinopsis" Type="nvarchar" MaxLength="50" />
+          <Property Name="Caratula" Type="nvarchar" MaxLength="50" />
+          <Property Name="Unidades" Type="int" />
+          <Property Name="Disponibilidad" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="LibrosAutores">
+          <Key>
+            <PropertyRef Name="IdAutor" />
+            <PropertyRef Name="Isbn" />
+          </Key>
+          <Property Name="IdAutor" Type="int" Nullable="false" />
+          <Property Name="Isbn" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LibrosCategorias">
+          <Key>
+            <PropertyRef Name="Isbn" />
+            <PropertyRef Name="IdCategoria" />
+          </Key>
+          <Property Name="Isbn" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IdCategoria" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LibrosLectores">
+          <Key>
+            <PropertyRef Name="Isbn" />
+            <PropertyRef Name="NCarnet" />
+          </Key>
+          <Property Name="Isbn" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NCarnet" Type="int" Nullable="false" />
+          <Property Name="FechaPrestamo" Type="datetime" />
+          <Property Name="FechaDevolucion" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_LibrosAutores_Autores">
+          <End Role="Autores" Type="Self.Autores" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LibrosAutores" Type="Self.LibrosAutores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Autores">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LibrosAutores">
+              <PropertyRef Name="IdAutor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LibrosAutores_Libros">
+          <End Role="Libros" Type="Self.Libros" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LibrosAutores" Type="Self.LibrosAutores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Libros">
+              <PropertyRef Name="Isbn" />
+            </Principal>
+            <Dependent Role="LibrosAutores">
+              <PropertyRef Name="Isbn" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LibrosCategorias_Categorias">
+          <End Role="Categorias" Type="Self.Categorias" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LibrosCategorias" Type="Self.LibrosCategorias" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categorias">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LibrosCategorias">
+              <PropertyRef Name="IdCategoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LibrosCategorias_Libros">
+          <End Role="Libros" Type="Self.Libros" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LibrosCategorias" Type="Self.LibrosCategorias" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Libros">
+              <PropertyRef Name="Isbn" />
+            </Principal>
+            <Dependent Role="LibrosCategorias">
+              <PropertyRef Name="Isbn" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LibrosLectores_Lectores">
+          <End Role="Lectores" Type="Self.Lectores" Multiplicity="1" />
+          <End Role="LibrosLectores" Type="Self.LibrosLectores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lectores">
+              <PropertyRef Name="NCarnet" />
+            </Principal>
+            <Dependent Role="LibrosLectores">
+              <PropertyRef Name="NCarnet" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LibrosLectores_Libros">
+          <End Role="Libros" Type="Self.Libros" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LibrosLectores" Type="Self.LibrosLectores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Libros">
+              <PropertyRef Name="Isbn" />
+            </Principal>
+            <Dependent Role="LibrosLectores">
+              <PropertyRef Name="Isbn" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BibliotecaRecuperacionAritzModelStoreContainer">
+          <EntitySet Name="Autores" EntityType="Self.Autores" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categorias" EntityType="Self.Categorias" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lectores" EntityType="Self.Lectores" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Libros" EntityType="Self.Libros" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LibrosAutores" EntityType="Self.LibrosAutores" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LibrosCategorias" EntityType="Self.LibrosCategorias" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LibrosLectores" EntityType="Self.LibrosLectores" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_LibrosAutores_Autores" Association="Self.FK_LibrosAutores_Autores">
+            <End Role="Autores" EntitySet="Autores" />
+            <End Role="LibrosAutores" EntitySet="LibrosAutores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LibrosAutores_Libros" Association="Self.FK_LibrosAutores_Libros">
+            <End Role="Libros" EntitySet="Libros" />
+            <End Role="LibrosAutores" EntitySet="LibrosAutores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LibrosCategorias_Categorias" Association="Self.FK_LibrosCategorias_Categorias">
+            <End Role="Categorias" EntitySet="Categorias" />
+            <End Role="LibrosCategorias" EntitySet="LibrosCategorias" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LibrosCategorias_Libros" Association="Self.FK_LibrosCategorias_Libros">
+            <End Role="Libros" EntitySet="Libros" />
+            <End Role="LibrosCategorias" EntitySet="LibrosCategorias" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LibrosLectores_Lectores" Association="Self.FK_LibrosLectores_Lectores">
+            <End Role="Lectores" EntitySet="Lectores" />
+            <End Role="LibrosLectores" EntitySet="LibrosLectores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LibrosLectores_Libros" Association="Self.FK_LibrosLectores_Libros">
+            <End Role="Libros" EntitySet="Libros" />
+            <End Role="LibrosLectores" EntitySet="LibrosLectores" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BibliotecaRecuperacionAritzModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Autor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Libros" Relationship="Self.LibrosAutores" FromRole="Autores" ToRole="Libros" />
+        </EntityType>
+        <EntityType Name="Categoria">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Libros" Relationship="Self.LibrosCategorias" FromRole="Categorias" ToRole="Libros" />
+        </EntityType>
+        <EntityType Name="Lector">
+          <Key>
+            <PropertyRef Name="NCarnet" />
+          </Key>
+          <Property Name="NCarnet" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Contrasena" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="LibrosLectores" Relationship="Self.FK_LibrosLectores_Lectores" FromRole="Lectores" ToRole="LibrosLectores" />
+        </EntityType>
+        <EntityType Name="Libro">
+          <Key>
+            <PropertyRef Name="Isbn" />
+          </Key>
+          <Property Name="Isbn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Titulo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Editorial" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Sinopsis" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Caratula" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Unidades" Type="Int32" />
+          <Property Name="Disponibilidad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="LibrosLectores" Relationship="Self.FK_LibrosLectores_Libros" FromRole="Libros" ToRole="LibrosLectores" />
+          <NavigationProperty Name="Autores" Relationship="Self.LibrosAutores" FromRole="Libros" ToRole="Autores" />
+          <NavigationProperty Name="Categorias" Relationship="Self.LibrosCategorias" FromRole="Libros" ToRole="Categorias" />
+        </EntityType>
+        <EntityType Name="LibrosLectores">
+          <Key>
+            <PropertyRef Name="Isbn" />
+            <PropertyRef Name="NCarnet" />
+          </Key>
+          <Property Name="Isbn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NCarnet" Type="Int32" Nullable="false" />
+          <Property Name="FechaPrestamo" Type="DateTime" Precision="3" />
+          <Property Name="FechaDevolucion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Lectores" Relationship="Self.FK_LibrosLectores_Lectores" FromRole="LibrosLectores" ToRole="Lectores" />
+          <NavigationProperty Name="Libro" Relationship="Self.FK_LibrosLectores_Libros" FromRole="LibrosLectores" ToRole="Libros" />
+        </EntityType>
+        <Association Name="FK_LibrosLectores_Lectores">
+          <End Role="Lectores" Type="BibliotecaRecuperacionAritzModel.Lector" Multiplicity="1" />
+          <End Role="LibrosLectores" Type="BibliotecaRecuperacionAritzModel.LibrosLectores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lectores">
+              <PropertyRef Name="NCarnet" />
+            </Principal>
+            <Dependent Role="LibrosLectores">
+              <PropertyRef Name="NCarnet" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LibrosLectores_Libros">
+          <End Role="Libros" Type="Self.Libro" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LibrosLectores" Type="BibliotecaRecuperacionAritzModel.LibrosLectores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Libros">
+              <PropertyRef Name="Isbn" />
+            </Principal>
+            <Dependent Role="LibrosLectores">
+              <PropertyRef Name="Isbn" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="LibrosAutores">
+          <End Role="Autores" Type="BibliotecaRecuperacionAritzModel.Autor" Multiplicity="*" />
+          <End Role="Libros" Type="Self.Libro" Multiplicity="*" />
+        </Association>
+        <Association Name="LibrosCategorias">
+          <End Role="Categorias" Type="Self.Categoria" Multiplicity="*" />
+          <End Role="Libros" Type="Self.Libro" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="BibliotecaRecuperacionAritzEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Autors" EntityType="BibliotecaRecuperacionAritzModel.Autor" />
+          <EntitySet Name="Categorias" EntityType="Self.Categoria" />
+          <EntitySet Name="Lectors" EntityType="BibliotecaRecuperacionAritzModel.Lector" />
+          <EntitySet Name="Libros" EntityType="Self.Libro" />
+          <EntitySet Name="LibrosLectores1" EntityType="BibliotecaRecuperacionAritzModel.LibrosLectores" />
+          <AssociationSet Name="FK_LibrosLectores_Lectores" Association="Self.FK_LibrosLectores_Lectores">
+            <End Role="Lectores" EntitySet="Lectors" />
+            <End Role="LibrosLectores" EntitySet="LibrosLectores1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LibrosLectores_Libros" Association="Self.FK_LibrosLectores_Libros">
+            <End Role="Libros" EntitySet="Libros" />
+            <End Role="LibrosLectores" EntitySet="LibrosLectores1" />
+          </AssociationSet>
+          <AssociationSet Name="LibrosAutores" Association="Self.LibrosAutores">
+            <End Role="Autores" EntitySet="Autors" />
+            <End Role="Libros" EntitySet="Libros" />
+          </AssociationSet>
+          <AssociationSet Name="LibrosCategorias" Association="Self.LibrosCategorias">
+            <End Role="Categorias" EntitySet="Categorias" />
+            <End Role="Libros" EntitySet="Libros" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BibliotecaRecuperacionAritzModelStoreContainer" CdmEntityContainer="BibliotecaRecuperacionAritzEntities">
+          <EntitySetMapping Name="Autors">
+            <EntityTypeMapping TypeName="BibliotecaRecuperacionAritzModel.Autor">
+              <MappingFragment StoreEntitySet="Autores">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categorias">
+            <EntityTypeMapping TypeName="BibliotecaRecuperacionAritzModel.Categoria">
+              <MappingFragment StoreEntitySet="Categorias">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lectors">
+            <EntityTypeMapping TypeName="BibliotecaRecuperacionAritzModel.Lector">
+              <MappingFragment StoreEntitySet="Lectores">
+                <ScalarProperty Name="NCarnet" ColumnName="NCarnet" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Contrasena" ColumnName="Contrasena" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Libros">
+            <EntityTypeMapping TypeName="BibliotecaRecuperacionAritzModel.Libro">
+              <MappingFragment StoreEntitySet="Libros">
+                <ScalarProperty Name="Isbn" ColumnName="Isbn" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="Editorial" ColumnName="Editorial" />
+                <ScalarProperty Name="Sinopsis" ColumnName="Sinopsis" />
+                <ScalarProperty Name="Caratula" ColumnName="Caratula" />
+                <ScalarProperty Name="Unidades" ColumnName="Unidades" />
+                <ScalarProperty Name="Disponibilidad" ColumnName="Disponibilidad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LibrosLectores1">
+            <EntityTypeMapping TypeName="BibliotecaRecuperacionAritzModel.LibrosLectores">
+              <MappingFragment StoreEntitySet="LibrosLectores">
+                <ScalarProperty Name="Isbn" ColumnName="Isbn" />
+                <ScalarProperty Name="NCarnet" ColumnName="NCarnet" />
+                <ScalarProperty Name="FechaPrestamo" ColumnName="FechaPrestamo" />
+                <ScalarProperty Name="FechaDevolucion" ColumnName="FechaDevolucion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="LibrosAutores" TypeName="BibliotecaRecuperacionAritzModel.LibrosAutores" StoreEntitySet="LibrosAutores">
+            <EndProperty Name="Autores">
+              <ScalarProperty Name="Id" ColumnName="IdAutor" />
+            </EndProperty>
+            <EndProperty Name="Libros">
+              <ScalarProperty Name="Isbn" ColumnName="Isbn" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="LibrosCategorias" TypeName="BibliotecaRecuperacionAritzModel.LibrosCategorias" StoreEntitySet="LibrosCategorias">
+            <EndProperty Name="Categorias">
+              <ScalarProperty Name="Id" ColumnName="IdCategoria" />
+            </EndProperty>
+            <EndProperty Name="Libros">
+              <ScalarProperty Name="Isbn" ColumnName="Isbn" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
